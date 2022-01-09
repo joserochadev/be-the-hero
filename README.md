@@ -1,2 +1,12 @@
 # be-the-hero
-Aplicação para cadastro de ONGs, seus casos e necessidades. para que as pessoas possam contribuir.
+## Application to register NGOs, their cases and needs. so that people can contribute.
+
+> Status: development
+
+## Techs
+
++ Node.js
++ SQLite
++ ReactJS
+
+
