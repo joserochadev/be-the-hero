@@ -8,6 +8,9 @@
 + Node.js
 + SQLite
 + ReactJS
++ React Native
++ Expo
++ Styled-Components
 
 
 ## How to use
