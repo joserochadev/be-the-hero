@@ -1,6 +1,8 @@
 import React from "react"
+import { Linking } from 'react-native'
 import { Feather} from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import * as MailComposer from 'expo-mail-composer'
 
 import Logo from '../../assets/logo.png'
 
@@ -21,9 +23,26 @@ import {
 export default function Details(){
 
     const navigation = useNavigation()
+    const route = useRoute()
+    const incident = route.params.incident
+    const message = `Olá ${incident.name}, estou entrando em contato pois gostaria de ajudar no caso "${incident.title}" com o valor de ${Intl.NumberFormat('pt-BR',{style: 'currency', currency: 'BRL'}).format(incident.value)}.`
+
 
     function navigateBack(){
         navigation.goBack()
+    }
+
+    function sendMail(){
+        MailComposer.composeAsync({
+            subject: `Héroi do caso: ${incident.title}`,
+            recipients: [incident.email],
+            body: message
+        })
+        
+    }
+
+    function sendWhatsapp(){
+        Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`)
     }
 
     return(
@@ -35,13 +54,13 @@ export default function Details(){
 
             <Incident>
                     <IncidentProperty>CASO:</IncidentProperty>
-                    <IncidentValue>Cachorrinha atropelada</IncidentValue>
+                    <IncidentValue>{incident.title}</IncidentValue>
 
                     <IncidentProperty>ONG:</IncidentProperty>
-                    <IncidentValue>APAD</IncidentValue>
+                    <IncidentValue>{incident.name}</IncidentValue>
                     
                     <IncidentProperty>VALOR:</IncidentProperty>
-                    <IncidentValue>R$ 120,00</IncidentValue>
+                    <IncidentValue>{Intl.NumberFormat('pt-BR',{style: 'currency', currency: 'BRL'}).format(incident.value)}</IncidentValue>
             </Incident> 
 
             <ContactBox>
@@ -51,8 +70,8 @@ export default function Details(){
                 <HeroDescription>Entre em contato:</HeroDescription>
 
                 <Actions>
-                    <Action onPress={()=>{}} ><ActionText>WhatsApp</ActionText></Action>
-                    <Action onPress={()=>{}} ><ActionText>E-mail</ActionText></Action>
+                    <Action onPress={sendWhatsapp} ><ActionText>WhatsApp</ActionText></Action>
+                    <Action onPress={sendMail} ><ActionText>E-mail</ActionText></Action>
                 </Actions>
             </ContactBox>
 
